@@ -406,9 +406,8 @@ python collect_a_share_data.py
 
 ## 📞 联系方式
 
-- 项目主页：https://github.com/yourusername/quant-trading-platform
-- 问题反馈：https://github.com/yourusername/quant-trading-platform/issues
-- 邮箱：your-email@example.com
+- 项目主页：https://github.com/upupup126/quant-trading-platform-
+- 问题反馈：https://github.com/yourusername/quant-trading-platform-/issues
 
 ## 🙏 致谢
 
