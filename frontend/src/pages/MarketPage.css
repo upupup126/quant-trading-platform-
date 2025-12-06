@@ -1,0 +1,236 @@
+.market-page {
+  padding: 16px;
+}
+
+.market-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.market-header h1 {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 24px;
+}
+
+.market-summary {
+  display: flex;
+  gap: 24px;
+}
+
+.summary-item {
+  text-align: center;
+  padding: 8px 16px;
+  background: #f5f5f5;
+  border-radius: 6px;
+  min-width: 120px;
+}
+
+.summary-label {
+  font-size: 12px;
+  color: #8c8c8c;
+  margin-bottom: 4px;
+}
+
+.summary-value {
+  font-size: 18px;
+  font-weight: bold;
+  color: #262626;
+}
+
+.market-controls {
+  display: flex;
+  gap: 8px;
+}
+
+/* 响应式布局 */
+@media (max-width: 768px) {
+  .market-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  
+  .market-summary {
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  
+  .summary-item {
+    flex: 1;
+    min-width: auto;
+    padding: 8px;
+  }
+  
+  .market-page {
+    padding: 12px;
+  }
+}
+
+/* 交易对卡片样式 */
+.symbol-card {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.symbol-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* K线图表区域样式 */
+.chart-container {
+  height: 400px;
+  background: #ffffff;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+/* 盘口数据表格样式 */
+.order-book-table {
+  width: 100%;
+  font-size: 12px;
+}
+
+.order-book-table th,
+.order-book-table td {
+  padding: 4px 8px;
+  text-align: right;
+}
+
+.order-book-table .ask-row {
+  color: #ff4d4f;
+}
+
+.order-book-table .bid-row {
+  color: #52c41a;
+}
+
+/* 加载状态样式 */
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+  background: #fafafa;
+  border-radius: 8px;
+  margin: 24px;
+}
+
+.loading-spinner p {
+  margin-top: 16px;
+  color: #8c8c8c;
+  font-size: 16px;
+}
+
+/* 错误状态样式 */
+.error-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  color: #ff4d4f;
+  background: #fff2f0;
+  border: 1px solid #ffccc7;
+  border-radius: 6px;
+  text-align: center;
+  padding: 24px;
+}
+
+.error-message p {
+  margin-top: 16px;
+  line-height: 1.6;
+}
+
+.error-message small {
+  display: block;
+  margin-top: 8px;
+  color: #8c8c8c;
+  font-size: 12px;
+}
+
+/* 数据刷新状态 */
+.data-refresh-status {
+  font-size: 12px;
+  color: #8c8c8c;
+  text-align: right;
+  margin-top: 8px;
+  margin-bottom: 16px;
+  padding: 0 8px;
+}
+
+/* 图表区域内的加载状态 */
+.ant-card-body .ant-spin {
+  display: flex;
+  justify-content: center;
+  padding: 40px 0;
+}
+
+/* 盘口数据加载状态 */
+.ant-card-small .ant-spin {
+  padding: 20px 0;
+}
+
+.ant-card-small .ant-spin + p {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #8c8c8c;
+  text-align: center;
+}
+
+/* K线图数据提示 */
+.kline-data-info {
+  margin-top: 12px;
+  font-size: 12px;
+  color: #8c8c8c;
+}
+
+/* 市场数据卡片样式 */
+.market-data-card {
+  margin-bottom: 16px;
+}
+
+.market-data-card .ant-card-head {
+  background: #fafafa;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .loading-spinner {
+    height: 50vh;
+    margin: 16px;
+  }
+  
+  .error-message {
+    padding: 16px;
+  }
+  
+  .data-refresh-status {
+    text-align: center;
+    margin-bottom: 12px;
+  }
+}
+
+/* 移动设备优化 */
+@media (max-width: 576px) {
+  .market-summary {
+    gap: 12px;
+  }
+  
+  .summary-item {
+    padding: 6px 8px;
+  }
+  
+  .summary-value {
+    font-size: 16px;
+  }
+  
+  .chart-container {
+    height: 300px;
+  }
+}

@@ -1,0 +1,98 @@
+.order-book {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.order-book-section {
+  flex: 1;
+}
+
+.section-title {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.sell-title {
+  color: #ff4d4f;
+}
+
+.buy-title {
+  color: #52c41a;
+}
+
+.sell-table .price-cell {
+  color: #ff4d4f;
+  font-weight: 500;
+}
+
+.buy-table .price-cell {
+  color: #52c41a;
+  font-weight: 500;
+}
+
+.market-price-section {
+  text-align: center;
+  padding: 8px 0;
+  border-top: 1px solid #f0f0f0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.market-price {
+  margin-bottom: 8px;
+}
+
+.price-label {
+  font-size: 12px;
+  color: #8c8c8c;
+  margin-right: 8px;
+}
+
+.price-value {
+  font-size: 20px;
+  font-weight: 600;
+  color: #262626;
+  margin-right: 8px;
+}
+
+.price-change {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.price-change.positive {
+  color: #ff4d4f;
+}
+
+.price-change.negative {
+  color: #52c41a;
+}
+
+.market-summary {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #8c8c8c;
+}
+
+.order-depth {
+  min-width: 80px;
+}
+
+/* 表格样式覆盖 */
+.order-book .ant-table {
+  font-size: 12px;
+}
+
+.order-book .ant-table-cell {
+  padding: 8px !important;
+}
+
+.order-book .ant-table-row {
+  cursor: pointer;
+}
+
+.order-book .ant-table-row:hover {
+  background: #fafafa;
+}

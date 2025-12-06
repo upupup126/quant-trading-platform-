@@ -1,0 +1,139 @@
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #001529 !important;
+  padding: 0 24px !important;
+  height: 64px !important;
+  line-height: 64px !important;
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  margin-right: 40px;
+  height: 100%;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.logo-text {
+  font-size: 20px;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(90deg, #1890ff, #52c41a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+
+.main-menu {
+  background: transparent !important;
+  border-bottom: none !important;
+  height: 100%;
+}
+
+.main-menu .ant-menu-item {
+  color: rgba(255, 255, 255, 0.65) !important;
+  height: 64px;
+  line-height: 64px;
+  margin: 0 8px !important;
+  padding: 0 16px !important;
+}
+
+.main-menu .ant-menu-item:hover {
+  color: #fff !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.main-menu .ant-menu-item-selected {
+  color: #fff !important;
+  font-weight: 500;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.notification-badge {
+  cursor: pointer;
+}
+
+.notification-icon {
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.85);
+  transition: color 0.3s;
+}
+
+.notification-icon:hover {
+  color: #fff;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.user-info:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.user-avatar {
+  background: #1890ff;
+}
+
+.username {
+  font-size: 14px;
+  color: #fff;
+  font-weight: 500;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .app-header {
+    padding: 0 12px !important;
+  }
+  
+  .logo-text {
+    font-size: 16px;
+  }
+  
+  .main-menu .ant-menu-item {
+    margin: 0 4px !important;
+    padding: 0 8px !important;
+  }
+  
+  .username {
+    display: none;
+  }
+}

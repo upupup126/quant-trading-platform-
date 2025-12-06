@@ -1,0 +1,27 @@
+.strategy-page {
+  padding: 16px;
+}
+
+.strategy-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.strategy-header h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+@media (max-width: 768px) {
+  .strategy-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .strategy-page {
+    padding: 12px;
+  }
+}

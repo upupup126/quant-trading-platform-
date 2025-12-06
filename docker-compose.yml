@@ -1,0 +1,136 @@
+version: '3.8'
+
+services:
+  # 前端服务
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - VITE_API_BASE_URL=http://localhost:8000/api
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    networks:
+      - quant-network
+
+  # 后端API服务
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://quant_user:quant_pass@db:5432/quant_trading
+      - REDIS_URL=redis://redis:6379/0
+      - CORS_ORIGINS=http://localhost:3000,http://frontend:3000
+    volumes:
+      - ./backend:/app
+      - /app/__pycache__
+    depends_on:
+      - db
+      - redis
+    networks:
+      - quant-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # PostgreSQL数据库
+  db:
+    image: postgres:13-alpine
+    environment:
+      - POSTGRES_DB=quant_trading
+      - POSTGRES_USER=quant_user
+      - POSTGRES_PASSWORD=quant_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - quant-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U quant_user -d quant_trading"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Redis缓存
+  redis:
+    image: redis:6-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - quant-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Nginx反向代理（可选）
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/nginx/ssl:/etc/nginx/ssl
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - quant-network
+
+  # Celery任务队列（可选）
+  celery:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.celery
+    environment:
+      - DATABASE_URL=postgresql://quant_user:quant_pass@db:5432/quant_trading
+      - REDIS_URL=redis://redis:6379/0
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - db
+      - redis
+    networks:
+      - quant-network
+
+  # 数据采集服务（可选）
+  data-collector:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.data-collector
+    environment:
+      - DATABASE_URL=postgresql://quant_user:quant_pass@db:5432/quant_trading
+      - REDIS_URL=redis://redis:6379/0
+    volumes:
+      - ./backend:/app
+      - ./data:/app/data
+    depends_on:
+      - db
+      - redis
+    networks:
+      - quant-network
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  quant-network:
+    driver: bridge

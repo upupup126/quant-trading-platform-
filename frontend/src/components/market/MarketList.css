@@ -1,0 +1,165 @@
+.market-list {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.list-title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: #262626;
+}
+
+.list-tabs {
+  display: flex;
+  gap: 12px;
+}
+
+.tab {
+  padding: 4px 8px;
+  font-size: 12px;
+  color: #8c8c8c;
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+.tab:hover {
+  color: #262626;
+  background: #f5f5f5;
+}
+
+.tab.active {
+  color: #1890ff;
+  font-weight: 500;
+  background: #e6f7ff;
+}
+
+.rank-badge {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 12px;
+  color: #fff;
+}
+
+.rank-1 {
+  background: #ff4d4f;
+}
+
+.rank-2 {
+  background: #faad14;
+}
+
+.rank-3 {
+  background: #1890ff;
+}
+
+.rank-text {
+  color: #8c8c8c;
+  font-size: 12px;
+}
+
+.symbol-cell {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.symbol-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.symbol-code {
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+
+.symbol-name {
+  font-size: 12px;
+  color: #8c8c8c;
+}
+
+.symbol-tags {
+  margin-top: 4px;
+}
+
+.market-tag {
+  font-size: 11px;
+  padding: 0 6px;
+  height: 20px;
+  line-height: 20px;
+  margin-right: 4px;
+}
+
+.change-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.change-percent {
+  font-weight: 500;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.change-amount {
+  font-size: 12px;
+  color: #8c8c8c;
+}
+
+.change-cell.positive {
+  color: #ff4d4f;
+}
+
+.change-cell.negative {
+  color: #52c41a;
+}
+
+.watchlist-button {
+  color: #8c8c8c;
+}
+
+.watchlist-button:hover {
+  color: #1890ff;
+}
+
+/* 表格样式 */
+.market-table .ant-table {
+  font-size: 12px;
+}
+
+.market-table .ant-table-cell {
+  padding: 8px !important;
+}
+
+.market-table .positive-row {
+  background: linear-gradient(to right, rgba(255, 77, 79, 0.05), transparent);
+}
+
+.market-table .negative-row {
+  background: linear-gradient(to right, rgba(82, 196, 26, 0.05), transparent);
+}
+
+.market-table .ant-table-row {
+  cursor: pointer;
+}
+
+.market-table .ant-table-row:hover {
+  background: #fafafa;
+}

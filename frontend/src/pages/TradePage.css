@@ -1,0 +1,198 @@
+.trade-page {
+  padding: 16px;
+}
+
+.trade-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.trade-header h1 {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 24px;
+}
+
+.account-info {
+  display: flex;
+  gap: 24px;
+  font-size: 14px;
+  color: #262626;
+}
+
+.trade-panel {
+  height: 100%;
+}
+
+.trade-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.trade-side-toggle {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.buy-button {
+  background: #ff4d4f !important;
+  border-color: #ff4d4f !important;
+}
+
+.sell-button {
+  background: #52c41a !important;
+  border-color: #52c41a !important;
+}
+
+.trade-form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.trade-form-row label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #262626;
+}
+
+.trade-summary {
+  background: #fafafa;
+  border: 1px solid #f0f0f0;
+  border-radius: 6px;
+  padding: 12px;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.summary-row:last-child {
+  margin-bottom: 0;
+}
+
+.summary-value {
+  font-weight: 500;
+  color: #262626;
+}
+
+.trade-button {
+  height: 48px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.position-name {
+  min-width: 0;
+}
+
+.position-name .symbol {
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+
+.position-name .name {
+  font-size: 12px;
+  color: #8c8c8c;
+}
+
+.profit-positive {
+  color: #ff4d4f;
+}
+
+.profit-negative {
+  color: #52c41a;
+}
+
+.profit-rate {
+  font-size: 12px;
+  color: #8c8c8c;
+  margin-left: 4px;
+}
+
+.buy-order {
+  color: #ff4d4f;
+  font-weight: 500;
+}
+
+.sell-order {
+  color: #52c41a;
+  font-weight: 500;
+}
+
+.order-status {
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+.status-pending {
+  background: #fffbe6;
+  color: #faad14;
+}
+
+.status-filled {
+  background: #f6ffed;
+  color: #52c41a;
+}
+
+.status-cancelled {
+  background: #fff2f0;
+  color: #ff4d4f;
+}
+
+.trade-confirm {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px 0;
+}
+
+.confirm-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.confirm-item:last-child {
+  border-bottom: none;
+}
+
+.confirm-item.total {
+  border-top: 2px solid #1890ff;
+  margin-top: 8px;
+  padding-top: 12px;
+}
+
+.total-amount {
+  font-size: 18px;
+  color: #1890ff;
+}
+
+@media (max-width: 768px) {
+  .trade-header {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  
+  .account-info {
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  
+  .trade-page {
+    padding: 12px;
+  }
+}
