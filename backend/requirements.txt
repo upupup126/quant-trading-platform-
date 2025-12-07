@@ -7,7 +7,8 @@ redis==4.5.4
 celery==5.3.1
 pandas==2.0.0
 numpy==1.24.0
-requests==2.28.2
+requests==2.31
+aiohttp==3.8.4
 aiofiles==23.1.0
 python-multipart==0.0.6
 python-jose==3.3.0
@@ -15,4 +16,9 @@ passlib==1.7.4
 python-dotenv==1.0.0
 websockets==11.0.0
 tushare==1.2.89
-baostock==0.8.8
+baostock==0.8.9
+pymysql==1.0.3
+
+# 数据更新依赖
+schedule==1.2.0
+yfinance==0.2.28

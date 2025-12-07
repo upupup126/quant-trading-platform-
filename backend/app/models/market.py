@@ -76,3 +76,22 @@ class MarketTicker(Base):
     
     def __repr__(self):
         return f"<MarketTicker(symbol={self.symbol}, last_price={self.last_price})>"
+
+class MarketDataUpdateLog(Base):
+    """市场数据更新日志表"""
+    __tablename__ = "market_data_update_log"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    task_id = Column(String(100), index=True, nullable=False, comment="任务ID")
+    symbol = Column(String(50), index=True, nullable=False, comment="交易对符号")
+    data_source = Column(String(50), nullable=False, comment="数据源（yahoo/binance/tushare/baostock）")
+    status = Column(String(20), nullable=False, comment="更新状态（pending/running/success/failed）")
+    message = Column(Text, comment="更新消息或错误信息")
+    data_count = Column(Integer, default=0, comment="更新数据条数")
+    start_time = Column(DateTime, comment="开始时间")
+    end_time = Column(DateTime, comment="结束时间")
+    created_at = Column(DateTime, default=datetime.utcnow, comment="创建时间")
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, comment="更新时间")
+    
+    def __repr__(self):
+        return f"<MarketDataUpdateLog(task_id={self.task_id}, symbol={self.symbol}, status={self.status})>"

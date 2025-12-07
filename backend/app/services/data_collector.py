@@ -4,11 +4,12 @@ import pandas as pd
 from datetime import datetime, timedelta
 from typing import List, Dict, Any, Optional
 from sqlalchemy.orm import Session
-import logging
 import os
 from app.models.market import MarketData, OrderBook, SymbolInfo, MarketTicker
+from app.core.logging_config import get_data_logger_instance, log_manager, log_exception
 
-logger = logging.getLogger(__name__)
+# 获取数据采集专用的日志记录器
+data_logger = get_data_logger_instance()
 
 class DataCollector:
     """数据采集服务类"""
@@ -44,11 +45,13 @@ class DataCollector:
                     data = await response.json()
                     return data
                 else:
-                    logger.error(f"Alpha Vantage API错误: {response.status}")
+                    log_manager.log_data_collection(symbol, "alpha_vantage", "error", 
+                                                   f"API错误: {response.status}")
                     return None
                     
         except Exception as e:
-            logger.error(f"获取Alpha Vantage数据失败: {e}")
+            log_manager.log_data_collection(symbol, "alpha_vantage", "error", 
+                                           "获取数据失败", e)
             return None
     
     # Yahoo Finance数据源
@@ -63,14 +66,14 @@ class DataCollector:
             if not data.empty:
                 return data
             else:
-                logger.warning(f"Yahoo Finance无数据: {symbol}")
+                log_manager.log_data_collection(symbol, "yahoo", "warning", "无数据")
                 return None
                 
         except ImportError:
-            logger.error("请安装yfinance库: pip install yfinance")
+            log_manager.log_data_collection(symbol, "yahoo", "error", "yfinance库未安装")
             return None
         except Exception as e:
-            logger.error(f"获取Yahoo Finance数据失败: {e}")
+            log_manager.log_data_collection(symbol, "yahoo", "error", "获取数据失败", e)
             return None
     
     # Binance加密货币数据
@@ -102,11 +105,13 @@ class DataCollector:
                     
                     return kline_data
                 else:
-                    logger.error(f"Binance API错误: {response.status}")
+                    log_manager.log_data_collection(symbol, "binance", "error", 
+                                                   f"API错误: {response.status}")
                     return None
                     
         except Exception as e:
-            logger.error(f"获取Binance数据失败: {e}")
+            log_manager.log_data_collection(symbol, "binance", "error", 
+                                           "获取数据失败", e)
             return None
     
     # Tushare A股数据 - 改进版
@@ -119,7 +124,8 @@ class DataCollector:
             # 从环境变量获取token
             tushare_token = os.getenv("TUSHARE_TOKEN")
             if not tushare_token:
-                logger.error("Tushare token未配置，请在.env文件中设置TUSHARE_TOKEN")
+                log_manager.log_data_collection(symbol, "tushare", "error", 
+                                               "Tushare token未配置，请在.env文件中设置TUSHARE_TOKEN")
                 return None
             
             ts.set_token(tushare_token)
@@ -139,7 +145,8 @@ class DataCollector:
                 # 分钟线数据（需要权限）
                 data = pro.stk_mins(ts_code=symbol, freq=freq, start_date=start_date, end_date=end_date)
             else:
-                logger.error(f"不支持的频率: {freq}")
+                log_manager.log_data_collection(symbol, "tushare", "error", 
+                                               f"不支持的频率: {freq}")
                 return None
             
             if not data.empty:
@@ -168,14 +175,17 @@ class DataCollector:
                 
                 return data
             else:
-                logger.warning(f"Tushare无数据: {symbol} {start_date}~{end_date}")
+                log_manager.log_data_collection(symbol, "tushare", "warning", 
+                                               f"无数据: {start_date}~{end_date}")
                 return None
                 
         except ImportError:
-            logger.error("请安装tushare库: pip install tushare")
+            log_manager.log_data_collection(symbol, "tushare", "error", 
+                                           "tushare库未安装")
             return None
         except Exception as e:
-            logger.error(f"获取Tushare数据失败: {e}")
+            log_manager.log_data_collection(symbol, "tushare", "error", 
+                                           "获取数据失败", e)
             return None
     
     # BaoStock A股历史数据批量下载
@@ -189,7 +199,8 @@ class DataCollector:
             lg = bs.login()
             
             if lg.error_code != "0":
-                logger.error(f"BaoStock登录失败: {lg.error_msg}")
+                log_manager.log_data_collection(symbol, "baostock", "error", 
+                                               f"登录失败: {lg.error_msg}")
                 return None
             
             # 解析symbol，BaoStock需要单独的代码和交易所
@@ -218,7 +229,8 @@ class DataCollector:
             )
             
             if rs.error_code != "0":
-                logger.error(f"BaoStock查询失败: {rs.error_msg}")
+                log_manager.log_data_collection(symbol, "baostock", "error", 
+                                               f"查询失败: {rs.error_msg}")
                 bs.logout()
                 return None
             
@@ -230,7 +242,7 @@ class DataCollector:
             bs.logout()
             
             if not data_list:
-                logger.warning(f"BaoStock无数据: {symbol}")
+                log_manager.log_data_collection(symbol, "baostock", "warning", "无数据")
                 return None
             
             # 转换为DataFrame
@@ -248,14 +260,17 @@ class DataCollector:
             data["date"] = pd.to_datetime(data["date"])
             data.set_index("date", inplace=True)
             
-            logger.info(f"从BaoStock成功获取{len(data)}条{symbol}数据")
+            log_manager.log_data_collection(symbol, "baostock", "success", 
+                                           f"成功获取{len(data)}条数据")
             return data
             
         except ImportError:
-            logger.error("请安装baostock库: pip install baostock")
+            log_manager.log_data_collection(symbol, "baostock", "error", 
+                                           "baostock库未安装")
             return None
         except Exception as e:
-            logger.error(f"获取BaoStock数据失败: {e}")
+            log_manager.log_data_collection(symbol, "baostock", "error", 
+                                           "获取数据失败", e)
             return None
     
     # 数据保存到数据库
@@ -285,16 +300,18 @@ class DataCollector:
                     self.db.add(market_data)
             
             self.db.commit()
-            logger.info(f"成功保存{symbol}的{len(data)}条数据")
+            log_manager.log_data_collection(symbol, "database", "success", 
+                                           f"成功保存{len(data)}条数据到数据库")
             return True
             
         except Exception as e:
             self.db.rollback()
-            logger.error(f"保存数据失败: {e}")
+            log_manager.log_data_collection(symbol, "database", "error", 
+                                           "保存数据到数据库失败", e)
             return False
     
     # 批量数据采集 - 更新版
-    async def collect_batch_data(self, symbols: List[str], data_source: str = "yahoo", 
+    async def collect_batch_data(self, symbols: List[str], data_source: str = "tushare", 
                                  **kwargs) -> Dict[str, bool]:
         """批量采集多个交易对的数据"""
         results = {}
@@ -320,7 +337,8 @@ class DataCollector:
                     frequency = kwargs.get("frequency", "d")
                     data = await self.fetch_baostock_data(symbol, start_date, end_date, frequency)
                 else:
-                    logger.error(f"不支持的数据源: {data_source}")
+                    log_manager.log_data_collection(symbol, data_source, "error", 
+                                                   f"不支持的数据源")
                     results[symbol] = False
                     continue
                 
@@ -342,7 +360,8 @@ class DataCollector:
                     elif isinstance(data, list):
                         kline_data = data
                     else:
-                        logger.error(f"未知的数据格式: {type(data)}")
+                        log_manager.log_data_collection(symbol, data_source, "error", 
+                                                       f"未知的数据格式: {type(data)}")
                         results[symbol] = False
                         continue
                     
@@ -351,13 +370,15 @@ class DataCollector:
                         success = await self.save_market_data(symbol, kline_data, period)
                         results[symbol] = success
                     else:
-                        logger.warning(f"{symbol}数据为空")
+                        log_manager.log_data_collection(symbol, data_source, "warning", 
+                                                       "数据为空")
                         results[symbol] = False
                 else:
                     results[symbol] = False
                     
             except Exception as e:
-                logger.error(f"采集{symbol}数据失败: {e}")
+                log_manager.log_data_collection(symbol, data_source, "error", 
+                                               "采集数据失败", e)
                 results[symbol] = False
         
         return results
@@ -367,7 +388,8 @@ class DataCollector:
         """启动实时数据采集"""
         # 这里可以实现WebSocket连接
         # 由于WebSocket实现较复杂，这里只提供框架
-        logger.info(f"开始实时采集: {symbols}")
+        log_manager.log_data_collection("realtime", "websocket", "info", 
+                                       f"开始实时采集: {', '.join(symbols)}")
         
         # 示例：Binance WebSocket
         # async with websockets.connect("wss://stream.binance.com:9443/ws") as websocket:
@@ -406,7 +428,8 @@ class DataCollector:
                 self.db.commit()
                 
         except Exception as e:
-            logger.error(f"处理实时数据失败: {e}")
+            log_manager.log_data_collection("realtime", "websocket", "error", 
+                                           "处理实时数据失败", e)
 
 # 使用示例
 async def collect_sample_data():

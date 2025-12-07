@@ -15,12 +15,28 @@ import asyncio
 import os
 import sys
 from datetime import datetime, timedelta
+from dotenv import load_dotenv
+
+# 加载环境变量
+load_dotenv()
 
 # 添加项目路径
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from app.core.database import SessionLocal
 from app.services.data_collector import DataCollector
+from app.core.logging_config import get_app_logger, log_manager, log_exception
+
+# 获取应用日志记录器
+app_logger = get_app_logger()
+
+
+def log_header(title):
+    """记录标题"""
+    separator = "=" * 60
+    app_logger.info(separator)
+    app_logger.info(f" {title}")
+    app_logger.info(separator)
 
 
 def print_header(title):
@@ -32,13 +48,13 @@ def print_header(title):
 
 async def collect_tushare_data():
     """使用Tushare采集A股数据示例"""
-    print_header("Tushare A股数据采集示例")
+    log_header("Tushare A股数据采集示例")
     
     # 检查Tushare token配置
     tushare_token = os.getenv("TUSHARE_TOKEN")
     if not tushare_token:
-        print("⚠️  警告: TUSHARE_TOKEN未配置，Tushare功能可能无法使用")
-        print("   请在.env文件中设置TUSHARE_TOKEN，或从tushare.pro注册获取")
+        app_logger.warning("⚠️ TUSHARE_TOKEN未配置，Tushare功能可能无法使用")
+        app_logger.warning("   请在.env文件中设置TUSHARE_TOKEN，或从tushare.pro注册获取")
         return False
     
     db = SessionLocal()
@@ -63,7 +79,7 @@ async def collect_tushare_data():
                 "601318.SH",  # 中国平安
             ]
             
-            print(f"📊 开始采集A股指数数据 ({len(a_share_indices)}个指数)...")
+            app_logger.info(f"📊 开始采集A股指数数据 ({len(a_share_indices)}个指数)...")
             
             # 采集指数数据（使用Tushare）
             index_results = await collector.collect_batch_data(
@@ -75,12 +91,12 @@ async def collect_tushare_data():
                 period="1d"
             )
             
-            print(f"📈 指数数据采集结果:")
+            app_logger.info("📈 指数数据采集结果:")
             for symbol, success in index_results.items():
                 status = "✅ 成功" if success else "❌ 失败"
-                print(f"    {symbol}: {status}")
+                app_logger.info(f"    {symbol}: {status}")
             
-            print(f"\n📊 开始采集A股股票数据 ({len(a_share_stocks)}只股票)...")
+            app_logger.info(f"\n📊 开始采集A股股票数据 ({len(a_share_stocks)}只股票)...")
             
             # 采集股票数据（使用Tushare）
             stock_results = await collector.collect_batch_data(
@@ -92,19 +108,19 @@ async def collect_tushare_data():
                 period="1d"
             )
             
-            print(f"📈 股票数据采集结果:")
+            app_logger.info("📈 股票数据采集结果:")
             for symbol, success in stock_results.items():
                 status = "✅ 成功" if success else "❌ 失败"
-                print(f"    {symbol}: {status}")
+                app_logger.info(f"    {symbol}: {status}")
             
             success_count = sum(index_results.values()) + sum(stock_results.values())
             total_count = len(index_results) + len(stock_results)
             
-            print(f"\n📋 汇总: {success_count}/{total_count} 个数据源采集成功")
+            app_logger.info(f"\n📋 汇总: {success_count}/{total_count} 个数据源采集成功")
             return success_count > 0
             
     except Exception as e:
-        print(f"❌ Tushare数据采集失败: {e}")
+        log_exception(e, "Tushare数据采集失败")
         return False
     finally:
         db.close()

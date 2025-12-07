@@ -77,6 +77,56 @@ class SimpleMarketSummary(BaseModel):
     daily_volume: float
     btc_dominance: float
 
+# ... existing code ...
+
+class MarketSummary(BaseModel):
+    """市场摘要模型"""
+    total_symbols: int
+    market_type_counts: Dict[str, int]
+    total_volume: float
+    total_turnover: float
+    avg_volume_per_symbol: float
+    price_change_stats: Dict[str, Any]
+    latest_update_time: Optional[str]
+    top_volume_symbol: Dict[str, Any]
+    activity_score: float
+    market_type: Optional[str]
+    time_range: str
+    start_time: str
+    end_time: str
+    timestamp: str
+    error: Optional[str] = None
+    
+    class Config:
+        schema_extra = {
+            "example": {
+                "total_symbols": 156,
+                "market_type_counts": {"stock": 100, "crypto": 56},
+                "total_volume": 4500000000.0,
+                "total_turnover": 28000000000.0,
+                "avg_volume_per_symbol": 28846153.85,
+                "price_change_stats": {
+                    "avg_change": 1.5,
+                    "up_count": 85,
+                    "down_count": 60,
+                    "flat_count": 11,
+                    "up_percent": 54.5,
+                    "down_percent": 38.5
+                },
+                "latest_update_time": "2023-12-07T10:30:00",
+                "top_volume_symbol": {
+                    "symbol": "000001.SH",
+                    "volume": 450000000,
+                    "name": "上证指数"
+                },
+                "activity_score": 78.5,
+                "market_type": "stock",
+                "time_range": "24h",
+                "start_time": "2023-12-06T10:30:00",
+                "end_time": "2023-12-07T10:30:00",
+                "timestamp": "2023-12-07T10:30:05"
+            }
+        }
 
 class SimpleSymbolData(BaseModel):
     """简化交易对数据模型"""

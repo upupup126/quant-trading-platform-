@@ -3,6 +3,10 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 import os
+from dotenv import load_dotenv
+
+# 加载环境变量
+load_dotenv()
 
 # 数据库配置
 DATABASE_URL = os.getenv(
